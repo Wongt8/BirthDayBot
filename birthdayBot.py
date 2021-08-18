@@ -110,12 +110,42 @@ async def gets(ctx, name):
         embed = discord.Embed(title=":octagonal_sign: Zut ce nom n'est pas enregistrer !",color=0xdb0000)
         await ctx.send(embed=embed)
 
+@client.command(aliases=['delete'])
+async def edits(ctx,name):
+    global old_data
+    new_data = []
+    for i in old_data:
+        if i["name"] != name :
+            new_data.append(i)
+            
+    if len(new_data) == len(old_data):
+        embed = discord.Embed(title=":octagonal_sign: Zut ce nom n'est pas enregistrer !",color=0xdb0000)
+        await ctx.send(embed=embed)
+    else :
+        embed = discord.Embed(title=":white_check_mark: Suppression effectué !",
+        description=f":wave: Bye,bye {name}",color=0xdf8911)
+        await ctx.send(embed=embed) 
+        old_data = new_data
+        with open("birthday.json",'w') as js:
+            json.dump(new_data,js,indent=4)
+
+@client.command(aliases=['helps'])
+async def helpCommand(ctx):
+    embed=discord.Embed(title="Help !", description="Comment utiliser les commandes du bot", color=0xca1cc4)
+    embed.set_thumbnail(url="https://images4.alphacoders.com/732/732394.png")
+    embed.add_field(name="Ajouter un anniversaire :white_check_mark:", value="+add nom dd/m/y", inline=False)
+    embed.add_field(name="Voir les informations d'une personne :bookmark_tabs:", value="+get nom", inline=False)
+    embed.add_field(name="Supprimer un anniversaire :x:", value="+delete nom", inline=True)
+    embed.set_footer(text="Bot by Wongt8")
+    await ctx.send(embed=embed)
+
+
 async def birthday_loop():
     channel = client.get_channel(773179876889985084)
     while True:
         nameAnniv,match = check_anniv()
         for i in nameAnniv:
-            an = "ans" if int(i[1]) > 1 else "an"
+            an = "ans" if int(i[1])+1 > 1 else "an"
             embed = discord.Embed(title=f":birthday: Joyeux anniversaire a {i[0]} !",
             description=f":partying_face: Et bravo pour tes {i[1]+1} {an}",color=0x28c3c0)
             await channel.send(embed=embed)
@@ -128,5 +158,5 @@ async def birthday_loop():
             json.dump(old_data,js,indent=4)
 
         await asyncio.sleep(86400)
-        
+
 client.run(TOKEN)

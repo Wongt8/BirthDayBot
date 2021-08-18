@@ -4,6 +4,7 @@ from discord.ext import commands
 from dateutil import relativedelta
 
 TOKEN = ""
+CHANNEL = 
 
 
 # Load data
@@ -102,9 +103,12 @@ async def gets(ctx, name):
             year = int(str(datetime.now())[:4])+1 if int(day_month[1]) < int(str(datetime.now())[5:-19]) else int(str(datetime.now())[:4])
             time_left =time_betewn_date(day_month[0],day_month[1],year)
             jour = "jours" if time_left != 1 else "jour"
-
-            embed.add_field(name="Prochain anniversaire :hourglass:", value=f"{time_left} {jour}", inline=False)
-            await ctx.send(embed=embed)
+            if time_left == 0:
+                embed.add_field(name="Prochain anniversaire :hourglass:", value="It is today baka :stuck_out_tongue_closed_eyes:", inline=False)
+                await ctx.send(embed=embed)
+            else :
+                embed.add_field(name="Prochain anniversaire :hourglass:", value=f"{time_left} {jour}", inline=False)
+                await ctx.send(embed=embed)
             
     if not find:
         embed = discord.Embed(title=":octagonal_sign: Zut ce nom n'est pas enregistrer !",color=0xdb0000)
@@ -141,8 +145,9 @@ async def helpCommand(ctx):
 
 
 async def birthday_loop():
-    channel = client.get_channel(773179876889985084)
+    channel = client.get_channel(CHANNEL)
     while True:
+
         nameAnniv,match = check_anniv()
         for i in nameAnniv:
             an = "ans" if int(i[1])+1 > 1 else "an"
@@ -154,8 +159,9 @@ async def birthday_loop():
                 if i["name"] == j[0]:
                     i["age"] = i["age"]+1
 
-        with open("birthday.json",'w') as js:
-            json.dump(old_data,js,indent=4)
+        if match:
+            with open("birthday.json",'w') as js:
+                json.dump(old_data,js,indent=4)
 
         await asyncio.sleep(86400)
 

@@ -24,5 +24,5 @@ Add this bot to your server and the problem will disappear
 
 ----
 
-Feel free to give your opinion on the bot and on what it can be improved
+Feel free to give your opinion about the bot and on what it can be improved
 

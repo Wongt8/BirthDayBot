@@ -6,7 +6,7 @@
 BirthDayBot is a Discord bot that will save birthdays and will celebrate them 🥳
 
 ## Introduction
-You always forget your friends' birthdays ?!
+You always forget your friend's birthdays ?!
 Add this bot to your server and the problem will disappear
 
 
